@@ -54,4 +54,5 @@ plot(x=usedcars$mileage,y=usedcars$price,main="Scatterplot of Price vs. Mileage"
 
 library(gmodels)
 usedcars$conservative = usedcars$color %in% c("Black","Gray","Silver","White") # %in% return to T or F
-
+table(usedcars$conservative)
+CrossTable(x=usedcars$model,y=usedcars$conservative)
