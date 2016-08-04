@@ -61,6 +61,81 @@ credit_cost_pred = predict(credit_cost, credit_test)
 CrossTable(credit_test$default, credit_cost_pred, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual default", "predicted default"))
 
 
+# Understanding classification rules
+# One Rule Algorithm: select one rule only
+# RIPPER algorithm
+# rule-learning algorithm is slow and inaccurate on noisy data
+
+# Example: identifying poisonous mushrooms with rule learners
+# Step 1: Collecting Data: 8124 mushroom samples from 23 species with 22 features of the mushroom samples
+# Step 2: Exploring and preparing the data
+mushrooms = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/mushrooms.csv",stringsAsFactors=T)
+dim(mushrooms)
+View(mushrooms)
+str(mushrooms) # veil_type only has one level so we can remove it
+mushrooms$veil_type = NULL
+
+# take a look at the mushroom type
+table(mushrooms$type)
+round(prop.table(table(mushrooms$type))*100,2) # 51.8% edible, 48.2% poisonous
+
+
+# Step 3: Training a model on the data
+# 1R implementation in the RWeke package, OneR()
+library(RWeka)
+# train/test split method 1
+mushrooms_rand = mushrooms[order(runif(nrow(mushrooms))),]
+mushrooms_train = mushrooms[1:floor(0.75*nrow(mushrooms)),]
+mushrooms_test = mushrooms[ceiling(0.75*nrow(mushrooms)):nrow(mushrooms),]
+
+# train/test split method 2
+inTrain = createDataPartition(y=mushrooms$type,p=0.75,list=F)
+mushrooms_train_caret = mushrooms[inTrain,]
+mushrooms_test_caret = mushrooms[-inTrain,]
+dim(mushrooms_train_caret)
+dim(mushrooms_test_caret)
+
+# Examine the proportion of type in the training/test datasets to make sure it is distribute randomly
+round(prop.table(table(mushrooms_train$type))*100,2)
+round(prop.table(table(mushrooms_test$type))*100,2)
+
+round(prop.table(table(mushrooms_train_caret$type))*100,2)
+round(prop.table(table(mushrooms_test_caret$type))*100,2)
+
+# Train the model with OneR
+mushroom_1R = OneR(type~.,data = mushrooms_train)
+mushroom_1R # odor feature was selected for rule generation
+table(mushrooms$type,mushrooms$odor)
+
+mushroom_1R_caret = OneR(type~.,data = mushrooms_train_caret)
+mushroom_1R_caret
+
+
+# Step 4: Evaluating model performance 
+mushrooms_pred = predict(mushroom_1R,mushrooms_test)
+CrossTable(mushrooms_test$type, mushrooms_pred, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual type","predicted type"))
+summary(mushroom_1R)
+
+mushrooms_pred_caret = predict(mushroom_1R_caret,mushrooms_test_caret)
+CrossTable(mushrooms_test_caret$type, mushrooms_pred_caret, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual type","predicted type"))
+summary(mushroom_1R_caret)
+
+
+
+# Step 5: Improving model performance: JRip(), a Java-based implementation of the RIPPER rule learning algorithm
+mushroom_JRip = JRip(type~., data = mushrooms_train)
+mushroom_JRip
+
+mushroom_JRip_caret = JRip(type~., data = mushrooms_train_caret)
+mushroom_JRip_caret
+
+mushroom_JRip_pred = predict(mushroom_JRip, mushrooms_test)
+mushroom_JRip_pred_caret = predict(mushroom_JRip_caret, mushrooms_test_caret)
+
+CrossTable(mushrooms_test$type, mushroom_JRip_pred, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual type","predicted type"))
+CrossTable(mushrooms_test_caret$type, mushroom_JRip_pred_caret, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual type","predicted type"))
+
+
 
 
 
