@@ -68,12 +68,61 @@ cor(predicted_strength2,concrete_test[,"strength"]) # cor(predicted_strength2,co
 
 
 # Support Vector Machine
+# A surface that defines a boundary between various points of data which represents exmaple plotted in to create flat boundary - hyperplane
+# SVM cn be used in any type of learning task but is most easily understood when used for binary classification
+
+# Maximum Margin Hyperplane: the line that leads to the greatest separation will generalize the best of future data
+# Support Vectors: are points from each class that are closet to the MMH
+
+# Kernel: adding new features that express mathematical relationshops between measured characteristics
+# switch the dimension and transform non-linear to linearly separable - new perspective of data
 
 
+# Performing OCR (Optical Character Recognition) with SVMs, Image Processing
+# Step 1: Collecting Data
+# contains 20000 examples of 26 English alphabet capital letters as printed using 20 different randomly reshaped and distorted black and white fonts
+
+# Step 2: Exploring and preparing the data
+letters = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/letterdata.csv")
+View(letters)
+dim(letters)
+str(letters)
+# SVM learners require all features to be numeric
+# Rescale(automatically performed when fitting SVM model)
+
+# Divide into train dataset and test dataset
+prop.table(table(letters$letter))
+letters_train = letters[1:16000,]
+letters_test = letters[16001:20000,]
+prop.table(table(letters_train$letter))
+prop.table(table(letters_test$letter))
+
+# Step 3: Training a model on the data, e1071 package (klaR, kernlab)
+library(kernlab)
+letter_classifier = ksvm(letter ~ ., data = letters_train, kernal = "vanilladot") # linear kernel function
+letter_classifier
 
 
+# Step 4: Evaluating model performance
+letter_predictions = predict(letter_classifier, letters_test) # return a predicted letter for each row of values in the testing data
+head(letter_predictions)
+head(letters_test$letter)
+table(letter_predictions,letters_test$letter)
+# library(gmodels)
+# CrossTable(letters_test$letter, letter_predictions, prop.chisq = F, prop.c = F, prop.r = F, dnn = c("actual","predicted") )
+
+agreement = letter_predictions == letters_test$letter # return a vector of T or F values indicating whether the model's predicted letter agrees with the actual letter in the test dataset
+table(agreement)
+prop.table(table(agreement))
 
 
+# Step 5: Improving model performance
+# Gaussian RBF kernel
+letter_classifier_rbf = ksvm(letter ~ ., data = letters_train, kernel = "rbfdot")
+letter_predictions_rbf = predict(letter_classifier_rbf, letters_test)
+agreement_rbf = letter_predictions_rbf == letters_test$letter
+table(agreement_rbf)
+prop.table(table(agreement_rbf))
 
 
 
