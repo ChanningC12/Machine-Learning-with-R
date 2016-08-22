@@ -11,7 +11,7 @@ shinyServer(function(input, output){
     })
     
     fileext = reactive({
-        switch(input$type, "Excel (CSV)" = "csv", "Text (TSV)" = txt, "Text (Space Separated)"= txt, "Doc" = "doc"
+        switch(input$type, "Excel (CSV)" = "csv", "Text (TSV)" = "txt", "Text (Space Separated)"= "txt", "Doc" = "doc"
             
         )})
     

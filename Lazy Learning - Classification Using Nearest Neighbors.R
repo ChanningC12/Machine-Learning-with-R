@@ -11,6 +11,7 @@
 
 # Explore and preparing the data
 wbcd = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/wisc_bc_data.csv", stringsAsFactors = F)
+head(wbcd)
 View(wbcd)
 str(wbcd)
 dim(wbcd)
@@ -58,7 +59,7 @@ library(gmodels)
 CrossTable(x = wbcd_test_labels, y = wbcd_pred, prop.chisq = F)
 
 
-# Improving the perofrmance - use standardization; try different k
+# Improving the performance - use standardization; try different k
 wbcd_z = as.data.frame(scale(wbcd[-1]))
 summary(wbcd_z$area_mean)
 # divide into train and test

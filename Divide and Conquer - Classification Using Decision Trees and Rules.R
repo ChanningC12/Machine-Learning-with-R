@@ -53,7 +53,7 @@ CrossTable(credit_test$default, credit_boost_pred10, prop.chisq = F, prop.c = F,
 # Making some mistakes more costly than others
 # The C5.0 algorithm allows us to assign a penalty to different types of errors in order to discourage a tree from making more costly mistakes
 # cost matrix
-error_cost = matrix(c(0,1,4,0), nrow = 2) # FN cost is four times aws much as a FT
+error_cost = matrix(c(0,1,4,0), nrow = 2) # FN cost is four times aws much as a FP
 error_cost
 
 credit_cost = C5.0(credit_train[-21], as.factor(credit_train$default), costs = error_cost)
@@ -81,7 +81,7 @@ round(prop.table(table(mushrooms$type))*100,2) # 51.8% edible, 48.2% poisonous
 
 
 # Step 3: Training a model on the data
-# 1R implementation in the RWeke package, OneR()
+# 1R implementation in the RWeka package, OneR()
 library(RWeka)
 # train/test split method 1
 mushrooms_rand = mushrooms[order(runif(nrow(mushrooms))),]
