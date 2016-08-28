@@ -43,7 +43,7 @@ groceryrule = apriori(groceries, parameter = list(support = 0.006, confidence = 
 groceryrule # 463 rules are generated
 
 
-# Steo 4: Evaluating model performance
+# Step 4: Evaluating model performance
 summary(groceryrule)
 # Lift (X - Y) = Confidence (X - Y) / Support (Y)
 # Lift is a measure of how much more likely one item is to be purchased relative to its typical purchase rate, given that you know another item has been purchased

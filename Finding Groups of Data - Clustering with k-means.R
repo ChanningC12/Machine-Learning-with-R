@@ -7,7 +7,7 @@
 teens = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/snsdata.csv")
 str(teens)
 table(teens$gradyear) # distribute evenly among grades
-table(teens$gender, useNA = "ifany")
+table(teens$gender, useNA = "ifany") # Include the number of NAs
 summary(teens$age) # min age =3, max age = 106. Need to clean the data before moving on
 teens$age = ifelse(teens$age >= 13 & teens$age < 20, teens$age, NA)
 summary(teens$age)
@@ -43,7 +43,6 @@ teen_cluster = kmeans(interests_z, 5)
 teen_cluster$size
 # examine the centers
 teen_cluster$centers
-
 
 # Step 5: Improving model performance
 # Add cluster to the original dataset
