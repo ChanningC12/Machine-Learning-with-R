@@ -38,6 +38,7 @@ summary(concrete_test)
 
 # Step 3: Training a model on the data
 # use multilayer feedforward neural network in neuralnet package (other packages: nnet, RSNNS)
+library(grid)
 library(neuralnet)
 
 # train the simplest multilayer feedforward network with only a single hidden node
