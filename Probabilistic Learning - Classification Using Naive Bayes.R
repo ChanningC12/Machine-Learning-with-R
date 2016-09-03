@@ -13,7 +13,7 @@
 # Example - Filtering mobile phone spam with the naive Bayes algorithm
 # Step 1: Collecting Data
 # Step 2: Exploring and preparing the data
-sms_raw = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/sms_spam.csv", stringsAsFactors = FALSE)
+sms_raw = read.csv("~/Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/sms_spam.csv", stringsAsFactors = FALSE)
 View(sms_raw)
 str(sms_raw)
 # convert the type into factor

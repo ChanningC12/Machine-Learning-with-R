@@ -1,4 +1,4 @@
-credit = read.csv("Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/credit.csv")
+credit = read.csv("~/Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/credit.csv")
 # Parameter tuning
 library(caret)
 set.seed(300)
@@ -29,7 +29,9 @@ m = train(as.factor(default)~.,
           trControl = ctrl,
           tuneGrid = grid
           )
-m # will choose the simple model
+m
+
+
 
 
 # Ensemble: by combining multiple weaker learners, a stronger learner is created
@@ -53,7 +55,7 @@ train(as.factor(default)~., data = credit, method = "treebag", trControl = ctrl)
 # SVM
 library(kernlab)
 str(svmBag)
-bagctrl = bagControl(fit=svmBag$fit, predict=svmBag$pred, aggregate=svmBag$aggregate)
+bagctrl = bagControl(fit=svmBag$fit, predict=svmBag$pred, aggregate=svmBag$aggregate) # fit (fit the model), predict (make predictions), aggregate (counting votes)
 set.seed(300)
 svmbag = train(as.factor(default)~.,data=credit,"bag",trControl=ctrl,bagControl=bagctrl)
 svmbag
@@ -75,8 +77,8 @@ set.seed(300)
 m_rf = train(as.factor(default)~., data = credit, method = "rf", metric = "Kappa", trControl = ctrl, tuneGrid = grid_rf)
 
 # compare that to a boosted tree using 10,20,30,40
-grid_c50 = expand.grid(.model = "tree"
-                       .trials = c(10,20,30,40)
+grid_c50 <- expand.grid(.model = "tree",
+                       .trials = c(10,20,30,40),
                        .winnow = "FALSE"
                        )
 set.seed(300)
@@ -84,7 +86,7 @@ m_c50 = train(as.factor(default)~., data = credit, method = "C5.0", metric = "Ka
 
 # compare two approaches side by side
 m_rf
-
+m_c50
 
 
 

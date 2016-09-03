@@ -52,7 +52,7 @@ str(perf.auc)
 # validation dataset would be used for iterating and refining the model or models choosen, leaving the test dataset to be used only once as a final step to report an estimated error rate
 library(caret)
 # read in credit dataset
-credit = read.csv("Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/credit.csv")
+credit = read.csv("~/Desktop/Github/Machine-Learning-with-R/Machine-Learning-with-R-datasets/credit.csv")
 # examine the data
 dim(credit)
 head(credit)
