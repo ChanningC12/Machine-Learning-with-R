@@ -7,8 +7,8 @@ table(kyphosis$Kyphosis)
 str(kyphosis)
 
 # Split randomly
-x <- kyphosis[sample(1:nrow(kyphosis), nrow(kyphosis), replace = F),]
-x.train <- kyphosis[1:floor(nrow(x)*.75), ]
+x <- kyphosis[sample(1:nrow(kyphosis), nrow(kyphosis), replace = F),] # randomly reorder the sequence
+x.train <- kyphosis[1:floor(nrow(x)*.75), ] # split into train and test set
 x.evaluate <- kyphosis[(floor(nrow(x)*.75)+1):nrow(x), ]
 
 # Create a model using "random forest and bagging ensemble algorithms
@@ -31,6 +31,9 @@ x.evaluate$prediction <- predict(x.model, newdata=x.evaluate)
 x.evaluate$correct <- x.evaluate$prediction == x.evaluate$Kyphosis
 print(paste("% of predicted classifications correct", mean(x.evaluate$correct)))
 
+library(caret)
+confusionMatrix(x.evaluate$prediction, x.evaluate$Kyphosis, positive = "absent")
+
 # Extract the class probabilities.
 x.evaluate$probabilities <- 1- unlist(treeresponse(x.model,
                                                    newdata=x.evaluate), use.names=F)[seq(1,nrow(x.evaluate)*2,2)]
@@ -44,4 +47,4 @@ plot(perf, main="ROC curve", colorize=T)
 
 # And then a lift chart
 perf <- performance(pred,"lift","rpp")
-plot(perf, main="lift curve", colorize=T)
+plot(perf, main="lift curve")
